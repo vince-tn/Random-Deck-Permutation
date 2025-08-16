@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 require("dotenv").config();
 const express = require("express");
 const nodemailer = require("nodemailer");
@@ -115,22 +117,19 @@ function factorial(num) {
   return result;
 }
 
-// Leaderboard route: shows top 10 longest consecutive matches
 app.get("/api/leaderboard", async (req, res) => {
   try {
     const allCombinations = await Combination.find({});
     let matches = [];
 
-    // Compare every pair of users
     for (let i = 0; i < allCombinations.length; i++) {
       for (let j = i + 1; j < allCombinations.length; j++) {
         const user1 = allCombinations[i];
         const user2 = allCombinations[j];
 
-        // Find longest common consecutive sequence
         const result = findMatches(user1.combination, user2.combination);
 
-        if (result.length > 1) { // only consider matches of 2+ cards
+        if (result.length > 1) {
           matches.push({
             match: result,
             users: [user1.username, user2.username],
@@ -140,7 +139,6 @@ app.get("/api/leaderboard", async (req, res) => {
       }
     }
 
-    // Remove duplicates (same combination, same users)
     const uniqueMatches = [];
     const seen = new Set();
     for (const m of matches) {
@@ -151,10 +149,8 @@ app.get("/api/leaderboard", async (req, res) => {
       }
     }
 
-    // Sort by length of matched sequence (descending)
     uniqueMatches.sort((a, b) => b.length - a.length);
 
-    // Take top 10
     const leaderboard = uniqueMatches.slice(0, 10).map((entry, idx) => ({
       rank: idx + 1,
       users: entry.users,
@@ -168,7 +164,6 @@ app.get("/api/leaderboard", async (req, res) => {
   }
 });
 
-// Helper function: find longest common consecutive sequence between two decks
 function findMatches(deck1, deck2) {
   let maxMatch = [];
 
