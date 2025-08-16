@@ -83,26 +83,24 @@ function App() {
     setTimeout(() => document.body.removeChild(dragGhost), 0);
 };
 
-const handleTouchStart = (e, index) => {
-  setTouchDragIndex(index);
-  const touch = e.touches[0];
-  setTouchStart({ x: touch.clientX, y: touch.clientY });
-};
+  const handleTouchStart = (e, index) => {
+    setTouchDragIndex(index);
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  };
 
-const handleTouchMove = (e, index) => {
-  if (touchDragIndex === null) return;
+  const handleTouchMove = (e, index) => {
+    if (touchDragIndex === null) return;
 
-  const touch = e.touches[0];
-  const dx = Math.abs(touch.clientX - touchStart.x);
-  const dy = Math.abs(touch.clientY - touchStart.y);
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStart.x);
+    const dy = Math.abs(touch.clientY - touchStart.y);
 
-  // Only act if horizontal swipe
-  if (dx > dy) {
-    e.preventDefault(); // prevent scrolling
-    // Optional: highlight or move ghost card visually
-    setTouchCurrentIndex(index);
-  }
-};
+    if (dx > dy) {
+      e.preventDefault();
+      setTouchCurrentIndex(index);
+    }
+  };
 
   const handleTouchEnd = () => {
     if (touchDragIndex === null || touchCurrentIndex === null) {
