@@ -9,7 +9,7 @@ const Leaderboard = ({ onClose }) => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/leaderboard");
+        const res = await fetch("https://random-deck-permutation.onrender.com/api/leaderboard");
         if (!res.ok) throw new Error("Failed to fetch leaderboard");
         const json = await res.json();
         setData(json);
