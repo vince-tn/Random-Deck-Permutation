@@ -210,7 +210,7 @@ function App() {
         <div className="header-right">
           <button onClick={() => setShowAbout(true)}>About</button>
           <button style={{ marginLeft: '5px' }} onClick={() => setShowLeaderboard(true)}>Leaderboard</button>
-          <button style={{ marginRight: '5px' }}><a href='https://buymeacoffee.com/vince_tn'>Buy Me Coffee</a></button>
+          <button style={{ marginRight: '5px' }}><a href='https://buymeacoffee.com/vince_tn'>Buy Me a ☕︎</a></button>
         </div>
       </header>
 
