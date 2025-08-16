@@ -39,6 +39,8 @@ function App() {
   const [isShuffling, setIsShuffling] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
+
 
   
   const shuffleCards = () => {
@@ -78,6 +80,29 @@ function App() {
     setTimeout(() => document.body.removeChild(dragGhost), 0);
 };
 
+  const handleTouchStart = (e, index) => {
+    setDraggedIndex(index);
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchMove = (e, index) => {
+    if (draggedIndex === null) return;
+
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStart.x);
+    const dy = Math.abs(touch.clientY - touchStart.y);
+
+    if (dx > dy) {
+      e.preventDefault();
+      moveGhost(touch, index);
+    } else {
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setDraggedIndex(null);
+  };
 
   const handleSave = async () => {
     const saveBtn = document.getElementById("savebtn");
@@ -195,6 +220,9 @@ function App() {
                 className={`card ${revealed ? 'revealed' : ''}`}
                 draggable={dragCount < dragLimit}
                 onDragStart={(e) => handleDragStart(index, e)}
+                onTouchStart={(e) => handleDragStart(index, e)}
+                onTouchMove={(e) => handleTouchMove(e, index)}
+                onTouchEnd={handleTouchEnd}
               >
                 <div className="card-inner">
                   <div className="card-front">
