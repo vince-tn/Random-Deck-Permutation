@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 require("dotenv").config();
 const express = require("express");
 const nodemailer = require("nodemailer");
