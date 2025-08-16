@@ -1,0 +1,416 @@
+body {
+  background-color: #043E23;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='594' height='594' viewBox='0 0 200 200'%3E%3Cg %3E%3Cpolygon fill='%23383838' points='100 57.1 64 93.1 71.5 100.6 100 72.1'/%3E%3Cpolygon fill='%23434343' points='100 57.1 100 72.1 128.6 100.6 136.1 93.1'/%3E%3Cpolygon fill='%23383838' points='100 163.2 100 178.2 170.7 107.5 170.8 92.4'/%3E%3Cpolygon fill='%23434343' points='100 163.2 29.2 92.5 29.2 107.5 100 178.2'/%3E%3Cpath fill='%234F4F4F' d='M100 21.8L29.2 92.5l70.7 70.7l70.7-70.7L100 21.8z M100 127.9L64.6 92.5L100 57.1l35.4 35.4L100 127.9z'/%3E%3Cpolygon fill='%23740010' points='0 157.1 0 172.1 28.6 200.6 36.1 193.1'/%3E%3Cpolygon fill='%23820619' points='70.7 200 70.8 192.4 63.2 200'/%3E%3Cpolygon fill='%23901A23' points='27.8 200 63.2 200 70.7 192.5 0 121.8 0 157.2 35.3 192.5'/%3E%3Cpolygon fill='%23820619' points='200 157.1 164 193.1 171.5 200.6 200 172.1'/%3E%3Cpolygon fill='%23740010' points='136.7 200 129.2 192.5 129.2 200'/%3E%3Cpolygon fill='%23901A23' points='172.1 200 164.6 192.5 200 157.1 200 157.2 200 121.8 200 121.8 129.2 192.5 136.7 200'/%3E%3Cpolygon fill='%23740010' points='129.2 0 129.2 7.5 200 78.2 200 63.2 136.7 0'/%3E%3Cpolygon fill='%23901A23' points='200 27.8 200 27.9 172.1 0 136.7 0 200 63.2 200 63.2'/%3E%3Cpolygon fill='%23820619' points='63.2 0 0 63.2 0 78.2 70.7 7.5 70.7 0'/%3E%3Cpolygon fill='%23901A23' points='0 63.2 63.2 0 27.8 0 0 27.8'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+}
+
+.header-left button {
+  margin: 0;
+  font-size: 1.5rem;
+  margin-left: 6rem;
+  color: white;
+  background-color: transparent;
+}
+.header-left img {
+  width: 60px;
+  height: 60px;
+  margin-left: 4rem;
+  position: absolute;
+  filter: invert(1) drop-shadow(0 0 5px rgba(0, 0, 0, 0.822));
+}
+.header-left:hover {
+  scale: 1.1;
+  filter: drop-shadow(0 0 5px rgba(146, 146, 146, 0.822));
+  transition: scale 0.3s ease-in-out;
+
+}
+.header-center {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.header-center button {
+  font-size: 1rem;
+}
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-left: auto;
+  background-color: rgba(99, 102, 107, 0.489);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease; 
+}
+
+.header-right button {
+  background-color: transparent;
+  font-size: 1rem;
+}
+.header-right button:hover {
+    color: rgb(179, 189, 195);
+    transition: color 0.3s ease;
+  }
+.header-right a {
+  color: white;
+  text-decoration: none;
+}
+.header-right a:hover {
+  color: rgb(179, 189, 195);
+  transition: color 0.3s ease;
+}
+.app {
+  font-family: sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
+}
+/* .app {
+  text-align: center;
+  padding: 2rem;
+  font-family: sans-serif;
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  gap: 15px;
+  width: fit-content;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.card {
+  width: 90px;
+  height: 130px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  perspective: 1000px;
+  display: inline-block;
+  position: relative;
+  margin: 5px;
+}
+
+/* flip*/
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+}
+
+.card.revealed .card-inner {
+  transform: rotateY(0deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  backface-visibility: hidden;
+}
+
+.card-front img,
+.card-back img {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card:hover {
+  transform: scale(1.05);
+  opacity: 0.7;
+}
+
+.card.dragging {
+  transform: rotate(5deg) scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+#text-under{
+  font-weight: bolder;
+  color: whitesmoke;
+  margin-top: 0rem;
+  text-align: center;
+  font-family: sans-serif;
+  align-items: center;
+  margin-top: 2rem;
+  position: relative;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  /* background-color: #3f51b5; */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+#shufflebtn {
+  background-color: #f50057;
+
+}
+#flipbtn {
+  background-color: #726d6d;
+}
+#savebtn {
+  background-color: #4f9252;
+}
+.card-container {
+  width: 80px;
+  height: 120px;
+}
+.card-container.dragging-out {
+  opacity: 0;
+}
+.card:active {
+  opacity: 1;
+}
+.card-container.dragging-out {
+  opacity: 0;
+}
+
+
+#shufflebtn:hover {
+  background-color: #c80046;
+  transform: scale(1.05);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  /* border: 2px solid #f50057; */
+}
+
+#flipbtn:hover {
+  background-color: #504c4c;
+}
+#savebtn:hover {
+  background-color: #4f6792;
+}
+
+.email-section {
+  margin-top: 0rem;
+  text-align: center;
+  font-family: sans-serif;
+  align-items: center;
+  padding-bottom: 2rem;
+}
+
+.email-section input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 250px;
+  margin-left: 4px;
+  margin-right: 4px;
+  border-radius: 0.4rem;
+  border: 1px solid #043E23;
+}
+
+.email-section button {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 20px 40px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.loading-spinner {
+  margin: 0 auto 10px;
+  border: 6px solid #ccc;
+  border-top: 6px solid #333;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.app-footer {
+  bottom: 0;
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.icons a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+.icons a:hover {
+  scale: 1.1 ;
+}
+#reddit-icon,
+#github-icon,
+#instagram-icon {
+  color: white;
+  transition: color 0.3s ease;
+}
+#reddit-icon:hover {
+  color: rgb(231, 106, 44);
+  transition: color 0.3s ease;
+}
+#github-icon:hover {
+  color: #000000;
+  transition: color 0.3s ease;
+}
+
+#instagram-icon:hover {
+  color: rgb(255, 0, 111);
+  transition: color 0.5s ease;
+}
+.notgamblingsite {
+  color: white;
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+  font-family: sans-serif;
+}
+
+
+
+
+@media (max-width: 1200px) {
+  .card-grid {
+    grid-template-columns: repeat(9, 1fr);
+    gap: 15px;
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    justify-content:baseline;
+  }
+}
+
+@media (max-width: 768px) {
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    justify-content:baseline;
+  }
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 1px;
+    row-gap: 1px;
+  }
+  
+  .header-left{
+    display: none;
+  }
+  
+  .header-right {
+    display: flex;
+    justify-content: center;
+    margin-right: 0;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .header-right button:hover {
+    color: rgb(179, 189, 195);
+  }
+  
+  .header-center {
+    margin-bottom: 0.5rem;
+  }
+  
+  .card {
+    width: 75px;
+    height: 105px;
+  }
+  #text-under {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+  #email input {
+    width: 8rem;
+  }
+  #username input {
+    width: 8rem;
+  }
+  .email-section {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  #savebtn {
+    width: 8rem;
+    display: block;
+    margin: 0.5rem auto 0 auto;
+  }
+}
+
+@media (max-height: 1000px) {
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    justify-content:baseline;
+  }
+}

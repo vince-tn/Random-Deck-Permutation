@@ -1,0 +1,110 @@
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  text-align: justify;
+}
+
+.about-popup {
+  background: linear-gradient(135deg, #d8d7d7, #d0e4ee);
+  color: #222;
+  padding: 25px 30px;
+  max-width: 650px;
+  width: 90%;
+  border-radius: 15px;
+  border: 1px solid #220202;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.6;
+  position: relative;
+  transform: translateY(-20px);
+  animation: slideDown 0.3s ease forwards;
+}
+
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top:-1rem;
+  margin-bottom: -1rem;
+}
+.about-header h2 {
+  font-size: 2rem;
+  font-weight: 1000;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.about-header button {
+  color: #fff;
+  background: #ff5e5e;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.about-header button:hover {
+  background: #ff1f1f;
+}
+
+.about-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.about-content p {
+  margin-bottom: 1rem;
+  word-break: break-word;
+}
+#fullnumber {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #000000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 600px) {
+  .about-popup {
+    width: 95%;
+    padding: 20px;
+  }
+  .about-header h2 {
+    font-size: 1.5rem;
+  }
+  .about-header button {
+    font-size: 1rem;
+    padding: 4px 8px;
+  }
+  .about-content {
+    font-size: 1rem;
+  }
+  #fullnumber {
+    font-size: 1rem;
+  }
+}
