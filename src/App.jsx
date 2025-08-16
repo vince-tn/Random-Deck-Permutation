@@ -40,6 +40,9 @@ function App() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
+  const [touchDragIndex, setTouchDragIndex] = useState(null);
+  const [touchCurrentIndex, setTouchCurrentIndex] = useState(null);
+
 
 
   
@@ -80,28 +83,50 @@ function App() {
     setTimeout(() => document.body.removeChild(dragGhost), 0);
 };
 
-  const handleTouchStart = (e, index) => {
-    setDraggedIndex(index);
-    const touch = e.touches[0];
-    setTouchStart({ x: touch.clientX, y: touch.clientY });
-  };
+const handleTouchStart = (e, index) => {
+  setTouchDragIndex(index);
+  const touch = e.touches[0];
+  setTouchStart({ x: touch.clientX, y: touch.clientY });
+};
 
-  const handleTouchMove = (e, index) => {
-    if (draggedIndex === null) return;
+const handleTouchMove = (e, index) => {
+  if (touchDragIndex === null) return;
 
-    const touch = e.touches[0];
-    const dx = Math.abs(touch.clientX - touchStart.x);
-    const dy = Math.abs(touch.clientY - touchStart.y);
+  const touch = e.touches[0];
+  const dx = Math.abs(touch.clientX - touchStart.x);
+  const dy = Math.abs(touch.clientY - touchStart.y);
 
-    if (dx > dy) {
-      e.preventDefault();
-      moveGhost(touch, index);
-    } else {
-    }
-  };
+  // Only act if horizontal swipe
+  if (dx > dy) {
+    e.preventDefault(); // prevent scrolling
+    // Optional: highlight or move ghost card visually
+    setTouchCurrentIndex(index);
+  }
+};
 
   const handleTouchEnd = () => {
-    setDraggedIndex(null);
+    if (touchDragIndex === null || touchCurrentIndex === null) {
+      setTouchDragIndex(null);
+      setTouchCurrentIndex(null);
+      return;
+    }
+
+    if (dragCount >= dragLimit || touchDragIndex === touchCurrentIndex) {
+      setTouchDragIndex(null);
+      setTouchCurrentIndex(null);
+      return;
+    }
+
+    // Swap cards
+    const newCards = [...cards];
+    [newCards[touchDragIndex], newCards[touchCurrentIndex]] =
+      [newCards[touchCurrentIndex], newCards[touchDragIndex]];
+
+    setCards(newCards);
+    setDragCount(prev => prev + 1);
+
+    setTouchDragIndex(null);
+    setTouchCurrentIndex(null);
   };
 
   const handleSave = async () => {
@@ -216,14 +241,18 @@ function App() {
               onDrop={() => handleDrop(index)}
               onDragEnd={handleDragEnd}
             >
-              <div
-                className={`card ${revealed ? 'revealed' : ''}`}
-                draggable={dragCount < dragLimit}
-                onDragStart={(e) => handleDragStart(index, e)}
-                onTouchStart={(e) => handleDragStart(index, e)}
-                onTouchMove={(e) => handleTouchMove(e, index)}
-                onTouchEnd={handleTouchEnd}
-              >
+          <div
+            className={`card ${revealed ? 'revealed' : ''}`}
+            draggable={dragCount < dragLimit} // desktop only
+            onDragStart={(e) => handleDragStart(index, e)} // desktop
+            onDragOver={handleDragOver} // desktop
+            onDrop={() => handleDrop(index)} // desktop
+            onDragEnd={handleDragEnd} // desktop
+            onTouchStart={(e) => handleTouchStart(e, index)} // mobile
+            onTouchMove={(e) => handleTouchMove(e, index)} // mobile
+            onTouchEnd={handleTouchEnd} // mobile
+          >
+
                 <div className="card-inner">
                   <div className="card-front">
                     <img src={card.image} alt={card.code} />
