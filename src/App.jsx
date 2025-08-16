@@ -265,7 +265,7 @@ function App() {
         </div>
 
         <p id="text-under">
-          Drag & Drop to swap cards (Swaps used: {dragCount} / {dragLimit})
+          Drag & Drop to swap cards. (Swaps used: {dragCount} / {dragLimit})<br/>Note: Mobile version doesn't support drag & drop...yet
         </p>
 
         <div className="email-section">
