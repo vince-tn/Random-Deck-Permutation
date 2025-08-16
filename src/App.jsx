@@ -3,6 +3,7 @@ import './App.css';
 import Leaderboard from './pages/Leaderboard';
 import About from './pages/About';
 import { FaGithub, FaReddit, FaInstagram } from "react-icons/fa";
+import logo from './assets/card-logo.svg';
 
 
 const cardCodes = [
@@ -155,7 +156,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-left">
-          <a href="#" className="logo"><img src="src/assets/card-logo.svg" alt="Logo"/></a>
+          <a href="https://random-deck-permutation.vercel.app/" className="logo"><img src={logo} alt="logo" /></a>
           <button>RANDOMDECK</button>
         </div>
         <div className="header-right">
