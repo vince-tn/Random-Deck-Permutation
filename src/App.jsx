@@ -4,6 +4,7 @@ import Leaderboard from './pages/Leaderboard';
 import About from './pages/About';
 import { FaGithub, FaReddit, FaInstagram } from "react-icons/fa";
 import logo from './assets/card-logo.svg';
+import portlogo from './assets/logo-inverted.svg';
 
 
 const cardCodes = [
@@ -278,6 +279,15 @@ function App() {
       </div>
         <footer className="app-footer">
           <div className="icons">
+            <a
+              id='portfolio-icon'
+              href='https://www.paulalcantara.dev/'
+              target='blank'
+              rel='noopener noreferrer'
+              className='portfolio-icon'
+            >
+              <img src={portlogo} alt='Portfolio Website' className='portfolio-icon' viewBox="0 0 100 100"/>
+            </a>
             <a
               id='github-icon'
               href="https://github.com/vince-tn"

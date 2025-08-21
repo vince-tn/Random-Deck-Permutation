@@ -300,9 +300,19 @@ button {
 .icons a:hover {
   scale: 1.1 ;
 }
+.icons img {
+  text-decoration: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  transition: filter 0.3s ease;
+}
+.icons img:hover {
+  filter: invert(35%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(1);
+}
 #reddit-icon,
 #github-icon,
-#instagram-icon {
+#instagram-icon
+.portfolio-icon {
   color: white;
   transition: color 0.3s ease;
 }
@@ -318,6 +328,10 @@ button {
 #instagram-icon:hover {
   color: rgb(255, 0, 111);
   transition: color 0.5s ease;
+}
+.portfolio-icon:hover {
+  filter: invert(35%) sepia(100%) saturate(500%) hue-rotate(180deg) brightness(0.8);
+  transition: filter 0.3s ease;
 }
 .notgamblingsite {
   color: white;
