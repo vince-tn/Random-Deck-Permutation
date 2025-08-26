@@ -40,6 +40,7 @@ function App() {
   const [isShuffling, setIsShuffling] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [saving, setSaving] = useState(false);
   // const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
   // const [touchDragIndex, setTouchDragIndex] = useState(null);
   // const [touchCurrentIndex, setTouchCurrentIndex] = useState(null);
@@ -145,7 +146,7 @@ function App() {
       saveBtn.disabled = false;
       return;
     }
-
+    setSaving(true);
     try {
       const response = await fetch("https://random-deck-permutation.onrender.com/save-combination", {
         method: "POST",
@@ -161,8 +162,8 @@ function App() {
 
       const data = await response.json();
       if (response.ok) {
+        setSaving(false);
         alert("Combination Saved and E-mail sent! \n\nNote: Saving a new combination with the same e-mail will overwrite the previous entry.");
-
         setHasShuffled(false);
         setDragCount(0);
         setDraggedIndex(null);
@@ -270,6 +271,14 @@ function App() {
           <input id="email" type="email" placeholder="Enter your email" />        
           <button id="savebtn" onClick={handleSave}>Save</button>
         </div>
+
+        {saving && (
+          <div className="loading-overlay">
+            <div className="loading-spinner"></div>
+            <p>Saving...</p>
+          </div>
+        )}
+
       {showLeaderboard && (
         <Leaderboard onClose={() => setShowLeaderboard(false)} />
       )}
