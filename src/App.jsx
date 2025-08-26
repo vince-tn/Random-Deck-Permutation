@@ -173,6 +173,7 @@ function App() {
         alert(`Error: ${data.error}`);
       }
     } catch (error) {
+      setSaving(false);
       console.error("Error saving combination:", error);
       alert("Failed to save combination.");
     } finally {
