@@ -124,13 +124,12 @@ app.get("/api/leaderboard", async (req, res) => {
       for (let j = i + 1; j < allCombinations.length; j++) {
         const user1 = allCombinations[i];
         const user2 = allCombinations[j];
-
         const result = findMatches(user1.combination, user2.combination);
 
         if (result.length > 1) {
           matches.push({
-            match: result,
             users: [user1.username, user2.username],
+            match: result,
             length: result.length
           });
         }
@@ -139,24 +138,41 @@ app.get("/api/leaderboard", async (req, res) => {
 
     matches.sort((a, b) => b.length - a.length);
 
-    const usedUsers = new Set();
-    const leaderboard = [];
+    const userBestMatch = new Map();
 
     for (const m of matches) {
-      if (m.users.some(u => usedUsers.has(u))) continue;
+      const [u1, u2] = m.users;
 
-      leaderboard.push({
-        rank: leaderboard.length + 1,
-        users: m.users,
-        combination: m.match
-      });
+      const prev1 = userBestMatch.get(u1);
+      const prev2 = userBestMatch.get(u2);
 
-      m.users.forEach(u => usedUsers.add(u));
-
-      if (leaderboard.length >= 10) break;
+      if (!prev1 || m.length > prev1.length) {
+        userBestMatch.set(u1, { otherUser: u2, match: m.match, length: m.length });
+      }
+      if (!prev2 || m.length > prev2.length) {
+        userBestMatch.set(u2, { otherUser: u1, match: m.match, length: m.length });
+      }
     }
 
-    res.json(leaderboard);
+    const leaderboardSet = new Set();
+    const leaderboard = [];
+
+    for (const [user, data] of userBestMatch.entries()) {
+      const key = [user, data.otherUser].sort().join(",");
+      if (!leaderboardSet.has(key)) {
+        leaderboardSet.add(key);
+        leaderboard.push({ users: [user, data.otherUser], combination: data.match, length: data.length });
+      }
+    }
+
+    leaderboard.sort((a, b) => b.length - a.length);
+    const top10 = leaderboard.slice(0, 10).map((entry, idx) => ({
+      rank: idx + 1,
+      users: entry.users,
+      combination: entry.combination
+    }));
+
+    res.json(top10);
 
   } catch (err) {
     console.error(err);
