@@ -146,11 +146,6 @@ function App() {
       saveBtn.disabled = false;
       return;
     }
-    if (!usernameInput) {
-      alert("Please enter a username");
-      saveBtn.disabled = false;
-      return;
-    }
     setSaving(true);
     try {
       const response = await fetch("https://random-deck-permutation.onrender.com/save-combination", {
