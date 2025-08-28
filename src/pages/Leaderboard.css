@@ -16,7 +16,7 @@
   /* top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); */
-  background: linear-gradient(135deg, #d8d7d7, #d0e4ee);
+  background: url('/tortoise-shell.svg') center center / cover no-repeat;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.5);
@@ -26,6 +26,7 @@
   overflow-y: auto;
   animation: fadeIn 0.3s ease;
   animation: slideDown 0.3s ease forwards;
+  border: #00473c 0.5rem solid;
 }
 
 .leaderboard-header {
@@ -37,6 +38,7 @@
 
 .leaderboard-header h2 {
   margin: 0;
+  color: #00473c;
 }
 
 .leaderboard-header button {
