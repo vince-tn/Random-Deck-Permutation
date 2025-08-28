@@ -146,6 +146,11 @@ function App() {
       saveBtn.disabled = false;
       return;
     }
+    if (!usernameInput) {
+      alert("Please enter a username");
+      saveBtn.disabled = false;
+      return;
+    }
     setSaving(true);
     try {
       const response = await fetch("https://random-deck-permutation.onrender.com/save-combination", {
@@ -268,7 +273,7 @@ function App() {
         </p>
 
         <div className="email-section">
-          <input id="username" type="text" placeholder="Username (optional)" />
+          <input id="username" type="text" placeholder="Username" />
           <input id="email" type="email" placeholder="Enter your email" />        
           <button id="savebtn" onClick={handleSave}>Save</button>
         </div>
