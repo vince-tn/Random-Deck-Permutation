@@ -118,54 +118,40 @@ function factorial(num) {
 app.get("/api/leaderboard", async (req, res) => {
   try {
     const allCombinations = await Combination.find({});
-    let matches = [];
+    const userBestMatch = new Map();
 
     for (let i = 0; i < allCombinations.length; i++) {
       for (let j = i + 1; j < allCombinations.length; j++) {
         const user1 = allCombinations[i];
         const user2 = allCombinations[j];
-        const result = findMatches(user1.combination, user2.combination);
+        const match = findMatches(user1.combination, user2.combination);
 
-        if (result.length > 1) {
-          matches.push({
-            users: [user1.username, user2.username],
-            match: result,
-            length: result.length
-          });
+        if (match.length > 1) {
+          const prev1 = userBestMatch.get(user1.username);
+          if (!prev1 || match.length > prev1.length || (match.length === prev1.length && user2.savedAt < prev1.savedAt)) {
+            userBestMatch.set(user1.username, { otherUser: user2.username, match, length: match.length, savedAt: user2.savedAt });
+          }
+          const prev2 = userBestMatch.get(user2.username);
+          if (!prev2 || match.length > prev2.length || (match.length === prev2.length && user1.savedAt < prev2.savedAt)) {
+            userBestMatch.set(user2.username, { otherUser: user1.username, match, length: match.length, savedAt: user1.savedAt });
+          }
         }
       }
     }
 
-    matches.sort((a, b) => b.length - a.length);
-
-    const userBestMatch = new Map();
-
-    for (const m of matches) {
-      const [u1, u2] = m.users;
-
-      const prev1 = userBestMatch.get(u1);
-      const prev2 = userBestMatch.get(u2);
-
-      if (!prev1 || m.length > prev1.length) {
-        userBestMatch.set(u1, { otherUser: u2, match: m.match, length: m.length });
-      }
-      if (!prev2 || m.length > prev2.length) {
-        userBestMatch.set(u2, { otherUser: u1, match: m.match, length: m.length });
-      }
-    }
-
-    const leaderboardSet = new Set();
+    const seenPairs = new Set();
     const leaderboard = [];
 
     for (const [user, data] of userBestMatch.entries()) {
-      const key = [user, data.otherUser].sort().join(",");
-      if (!leaderboardSet.has(key)) {
-        leaderboardSet.add(key);
-        leaderboard.push({ users: [user, data.otherUser], combination: data.match, length: data.length });
+      const pairKey = [user, data.otherUser].sort().join(",");
+      if (!seenPairs.has(pairKey)) {
+        seenPairs.add(pairKey);
+        leaderboard.push({ users: [user, data.otherUser], combination: data.match, length: data.length, savedAt: data.savedAt });
       }
     }
 
-    leaderboard.sort((a, b) => b.length - a.length);
+    leaderboard.sort((a, b) => b.length - a.length || a.savedAt - b.savedAt);
+
     const top10 = leaderboard.slice(0, 10).map((entry, idx) => ({
       rank: idx + 1,
       users: entry.users,
