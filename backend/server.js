@@ -72,7 +72,7 @@ app.post("/save-combination", async (req, res) => {
       from: process.env.FROM_EMAIL,
       to: email,
       subject: "Card Permutation DNA",
-      text: `Your Combination:\n${combination.join(", ")} \nYou are under the username, ${req.body.username || "Anonymous#${index + 1}"}.\n\n${rarityMessage}\n\n${emailNote}`,
+      text: `Your Combination:\n${combination.join(", ")} \nYou are under the username, ${req.body.username || "Anonymous"}.\n\n${rarityMessage}\n\n${emailNote}`,
     });
 
     if (matchingUser) {
@@ -139,18 +139,17 @@ app.get("/api/leaderboard", async (req, res) => {
 
     const userBestMatch = new Map();
 
-    matches.forEach((m) => {
-      m.users = m.users.map((u, idx) => u || `Anonymous#${idx + 1}`);
-
-      m.users.forEach(u => {
+    for (const m of matches) {
+      for (const u of m.users) {
         const existing = userBestMatch.get(u);
         if (!existing || m.length > existing.length) {
           userBestMatch.set(u, m);
         }
-      });
-    });
+      }
+    }
 
-    const leaderboardMatches = Array.from(userBestMatch.values());
+    const leaderboardMatches = Array.from(new Set(userBestMatch.values()));
+
     leaderboardMatches.sort((a, b) => b.length - a.length);
 
     const leaderboard = leaderboardMatches.slice(0, 10).map((entry, idx) => ({
@@ -160,13 +159,11 @@ app.get("/api/leaderboard", async (req, res) => {
     }));
 
     res.json(leaderboard);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 });
-
 
 
 function findMatches(deck1, deck2) {
