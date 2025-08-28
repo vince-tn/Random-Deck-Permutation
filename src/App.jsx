@@ -268,8 +268,8 @@ function App() {
         </p>
 
         <div className="email-section">
-          <input id="username" type="text" placeholder="Username (optional)" />
-          <input id="email" type="email" placeholder="Enter your email" />        
+          <input id="username" type="text" placeholder="Username" />
+          <input id="email" type="email" placeholder="Email Address" />        
           <button id="savebtn" onClick={handleSave}>Save</button>
         </div>
 
