@@ -13,7 +13,7 @@
 }
 
 .about-popup {
-  background: url('src/assets/tortoise-shell.svg') center center / cover no-repeat;
+  background: url('/tortoise-shell.svg') center center / cover no-repeat;
   color: #222;
   padding: 25px 30px;
   max-width: 650px;
