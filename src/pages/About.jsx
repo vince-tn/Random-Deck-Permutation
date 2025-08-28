@@ -21,6 +21,8 @@ const About = ({ onClose }) => {
           <p>
             If your sequence matches partially or completely with someone else's, it shows up on the leaderboard.
           </p>
+          <center><a href="https://github.com/vince-tn/Random-Deck-Permutation" target="_blank" rel="noopener noreferrer">
+            <button className="github-button">Source Code</button> </a></center>
         </div>
       </div>
     </div>

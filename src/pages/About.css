@@ -10,11 +10,10 @@
   align-items: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease;
-  text-align: justify;
 }
 
 .about-popup {
-  background: linear-gradient(135deg, #d8d7d7, #d0e4ee);
+  background: url('src/assets/tortoise-shell.svg') center center / cover no-repeat;
   color: #222;
   padding: 25px 30px;
   max-width: 650px;
@@ -29,6 +28,7 @@
   position: relative;
   transform: translateY(-20px);
   animation: slideDown 0.3s ease forwards;
+  border: #00473c 0.5rem solid;
 }
 
 .about-header {
@@ -37,13 +37,16 @@
   align-items: center;
   margin-left: 1rem;
   margin-right: 1rem;
-  margin-top:-1rem;
-  margin-bottom: -1rem;
+  margin-top:-1.5rem;
+  margin-bottom: -1.5rem;
 }
 .about-header h2 {
-  font-size: 2rem;
+  font-size: 2.7rem;
   font-weight: 1000;
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: left;
+  color: #00473c;
+  filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.59));
 }
 
 .about-header button {
@@ -52,7 +55,7 @@
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
-  padding: 5px 12px;
+  padding: 6px 14px 6px 14px;
   border-radius: 6px;
   transition: background 0.3s ease;
 }
@@ -67,19 +70,40 @@
   font-size: 1.2rem;
   margin-left: 1rem;
   margin-right: 1rem;
+  margin-bottom: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .about-content p {
   margin-bottom: 1rem;
   word-break: break-word;
+  filter: drop-shadow(0 0.5px 1px rgba(0, 0, 0, 0.59));
+  text-align: justify;
 }
 #fullnumber {
   font-size: 1.2rem;
   text-align: center;
-  color: #000000;
+  color: #00473c;
 }
 
+.github-button {
+  color: #fff;
+  background: #0d4729;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 6px;
+  transition: background border 0.3s ease;
+  margin-top: 1rem;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.59));
+  border: #0d4729 3px solid;
+}
+.github-button:hover {
+  background: #d4f6e4;
+  color: #000000;
+  border: #0d4729 3px solid;
+}
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -95,11 +119,11 @@
     padding: 20px;
   }
   .about-header h2 {
-    font-size: 1.5rem;
+    font-size: 2.1rem;
   }
   .about-header button {
     font-size: 1rem;
-    padding: 4px 8px;
+    padding: 5px 10px 5px 10px;
   }
   .about-content {
     font-size: 1rem;

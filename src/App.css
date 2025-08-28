@@ -321,7 +321,7 @@ button {
   transition: color 0.3s ease;
 }
 #github-icon:hover {
-  color: #000000;
+  color: #030303be;
   transition: color 0.3s ease;
 }
 
