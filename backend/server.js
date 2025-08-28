@@ -118,48 +118,60 @@ function factorial(num) {
 app.get("/api/leaderboard", async (req, res) => {
   try {
     const allCombinations = await Combination.find({});
-    const userBestMatch = new Map();
+    let matches = [];
 
     for (let i = 0; i < allCombinations.length; i++) {
       for (let j = i + 1; j < allCombinations.length; j++) {
         const user1 = allCombinations[i];
         const user2 = allCombinations[j];
-        const match = findMatches(user1.combination, user2.combination);
 
-        if (match.length > 1) {
-          const prev1 = userBestMatch.get(user1.username);
-          if (!prev1 || match.length > prev1.length || (match.length === prev1.length && user2.savedAt < prev1.savedAt)) {
-            userBestMatch.set(user1.username, { otherUser: user2.username, match, length: match.length, savedAt: user2.savedAt });
-          }
-          const prev2 = userBestMatch.get(user2.username);
-          if (!prev2 || match.length > prev2.length || (match.length === prev2.length && user1.savedAt < prev2.savedAt)) {
-            userBestMatch.set(user2.username, { otherUser: user1.username, match, length: match.length, savedAt: user1.savedAt });
-          }
+        const result = findMatches(user1.combination, user2.combination);
+        if (result.length > 1) {
+          matches.push({
+            users: [user1.username, user2.username],
+            match: result,
+            length: result.length
+          });
         }
       }
     }
 
-    const seenPairs = new Set();
-    const leaderboard = [];
+    matches.sort((a, b) => b.length - a.length);
 
-    for (const [user, data] of userBestMatch.entries()) {
-      const pairKey = [user, data.otherUser].sort().join(",");
-      if (!seenPairs.has(pairKey)) {
-        seenPairs.add(pairKey);
-        leaderboard.push({ users: [user, data.otherUser], combination: data.match, length: data.length, savedAt: data.savedAt });
+    const userBestMatch = new Map();
+
+    for (const m of matches) {
+      const [u1, u2] = m.users;
+
+      if (!userBestMatch.has(u1) || userBestMatch.get(u1).length < m.length) {
+        userBestMatch.set(u1, { ...m, mainUser: u1 });
+      }
+
+      if (!userBestMatch.has(u2) || userBestMatch.get(u2).length < m.length) {
+        userBestMatch.set(u2, { ...m, mainUser: u2 });
       }
     }
 
-    leaderboard.sort((a, b) => b.length - a.length || a.savedAt - b.savedAt);
+    const leaderboard = [];
+    const usedUsers = new Set();
 
-    const top10 = leaderboard.slice(0, 10).map((entry, idx) => ({
-      rank: idx + 1,
-      users: entry.users,
-      combination: entry.combination
-    }));
+    for (const m of matches) {
+      if (m.users.some(u => usedUsers.has(u))) continue;
 
-    res.json(top10);
+      const mainUser = m.users.find(u => userBestMatch.get(u) === m);
+      if (!mainUser) continue;
 
+      leaderboard.push({
+        rank: leaderboard.length + 1,
+        users: m.users,
+        combination: m.match
+      });
+
+      m.users.forEach(u => usedUsers.add(u));
+      if (leaderboard.length >= 10) break;
+    }
+
+    res.json(leaderboard);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch leaderboard" });
