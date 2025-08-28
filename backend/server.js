@@ -149,7 +149,17 @@ app.get("/api/leaderboard", async (req, res) => {
 
     uniqueMatches.sort((a, b) => b.length - a.length);
 
-    const leaderboard = uniqueMatches.slice(0, 10).map((entry, idx) => ({
+    const usedUsers = new Set();
+    const filteredMatches = [];
+
+    for (const m of uniqueMatches) {
+      if (!m.users.some(u => usedUsers.has(u))) {
+        filteredMatches.push(m);
+        m.users.forEach(u => usedUsers.add(u));
+      }
+    }
+
+    const leaderboard = filteredMatches.slice(0, 10).map((entry, idx) => ({
       rank: idx + 1,
       users: entry.users,
       combination: entry.match
