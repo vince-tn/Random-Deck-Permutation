@@ -137,34 +137,32 @@ app.get("/api/leaderboard", async (req, res) => {
       }
     }
 
-    const userBestMatch = new Map();
+    matches.sort((a, b) => b.length - a.length);
+
+    const usedUsers = new Set();
+    const leaderboard = [];
 
     for (const m of matches) {
-      for (const u of m.users) {
-        const existing = userBestMatch.get(u);
-        if (!existing || m.length > existing.length) {
-          userBestMatch.set(u, m);
-        }
-      }
+      if (m.users.some(u => usedUsers.has(u))) continue;
+
+      leaderboard.push({
+        rank: leaderboard.length + 1,
+        users: m.users,
+        combination: m.match
+      });
+
+      m.users.forEach(u => usedUsers.add(u));
+
+      if (leaderboard.length >= 10) break;
     }
 
-    const leaderboardMatches = Array.from(new Set(userBestMatch.values()));
-
-    leaderboardMatches.sort((a, b) => b.length - a.length);
-
-    const leaderboard = leaderboardMatches.slice(0, 10).map((entry, idx) => ({
-      rank: idx + 1,
-      users: entry.users,
-      combination: entry.match
-    }));
-
     res.json(leaderboard);
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 });
-
 
 
 function findMatches(deck1, deck2) {
