@@ -120,7 +120,6 @@ app.get("/api/leaderboard", async (req, res) => {
     const allCombinations = await Combination.find({});
     let matches = [];
 
-    // Generate all matches
     for (let i = 0; i < allCombinations.length; i++) {
       for (let j = i + 1; j < allCombinations.length; j++) {
         const user1 = allCombinations[i];
@@ -138,33 +137,22 @@ app.get("/api/leaderboard", async (req, res) => {
       }
     }
 
-    // Deduplicate identical matches
-    const uniqueMatches = [];
-    const seen = new Set();
+    const userBestMatch = new Map();
+
     for (const m of matches) {
-      const key = [...m.users].sort().join(",") + "|" + m.match.join(",");
-      if (!seen.has(key)) {
-        seen.add(key);
-        uniqueMatches.push(m);
+      for (const u of m.users) {
+        const existing = userBestMatch.get(u);
+        if (!existing || m.length > existing.length) {
+          userBestMatch.set(u, m);
+        }
       }
     }
 
-    // Sort matches by descending length
-    uniqueMatches.sort((a, b) => b.length - a.length);
+    const leaderboardMatches = Array.from(new Set(userBestMatch.values()));
 
-    // Ensure each user only keeps their *best* match
-    const usedUsers = new Set();
-    const filteredMatches = [];
+    leaderboardMatches.sort((a, b) => b.length - a.length);
 
-    for (const m of uniqueMatches) {
-      if (!m.users.some(u => usedUsers.has(u))) {
-        filteredMatches.push(m);
-        m.users.forEach(u => usedUsers.add(u));
-      }
-    }
-
-    // Rank top 10
-    const leaderboard = filteredMatches.slice(0, 10).map((entry, idx) => ({
+    const leaderboard = leaderboardMatches.slice(0, 10).map((entry, idx) => ({
       rank: idx + 1,
       users: entry.users,
       combination: entry.match
@@ -176,6 +164,7 @@ app.get("/api/leaderboard", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 });
+
 
 
 function findMatches(deck1, deck2) {
