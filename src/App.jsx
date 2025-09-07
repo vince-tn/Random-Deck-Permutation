@@ -321,15 +321,6 @@ function App() {
             >
               <FaReddit size={30}/>
             </a>
-            <a
-              id='instagram-icon'
-              href="https://www.instagram.com/vince_tn/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="instagram-icon"
-            >
-              <FaInstagram size={30}/>
-            </a>
           </div>
         </footer>
         <div><p className='notgamblingsite'>Not a gambling site.</p></div>
