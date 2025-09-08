@@ -4,7 +4,7 @@ import Leaderboard from './pages/Leaderboard';
 import About from './pages/About';
 import { FaGithub, FaReddit, FaInstagram } from "react-icons/fa";
 import logo from './assets/card-logo.svg';
-import portlogo from './assets/logo-inverted.svg';
+import portlogo from './assets/logo-inverted.png';
 
 
 const cardCodes = [
