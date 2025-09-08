@@ -315,6 +315,14 @@ button {
 .portfolio-icon {
   color: white;
   transition: color 0.3s ease;
+  align-items: center;
+  justify-content: center;
+}
+.portfolio-icon img {
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 #reddit-icon:hover {
   color: rgb(231, 106, 44);
