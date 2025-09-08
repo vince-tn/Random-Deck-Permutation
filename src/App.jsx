@@ -295,15 +295,6 @@ function App() {
         <footer className="app-footer">
           <div className="icons">
             <a
-              id='portfolio-icon'
-              href='https://www.paulalcantara.dev/'
-              target='blank'
-              rel='noopener noreferrer'
-              className='portfolio-icon'
-            >
-              <img src={portlogo} alt='Portfolio Website' className='portfolio-icon' viewBox="0 0 100 100"/>
-            </a>
-            <a
               id='github-icon'
               href="https://github.com/vince-tn"
               target="_blank"
@@ -311,6 +302,15 @@ function App() {
               className="github-icon"
             >
               <FaGithub size={30}/>
+            </a>
+            <a
+              id='portfolio-icon'
+              href='https://www.paulalcantara.dev/'
+              target='blank'
+              rel='noopener noreferrer'
+              className='portfolio-icon'
+            >
+              <img src={portlogo} alt='Portfolio Website' className='portfolio-icon' viewBox="0 0 100 100"/>
             </a>
             <a
               id='reddit-icon'
