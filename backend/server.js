@@ -23,6 +23,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const sgTransport = require("nodemailer-sendgrid-transport");
+
 app.post("/save-combination", async (req, res) => {
   const { email, combination } = req.body;
 
@@ -55,18 +57,16 @@ app.post("/save-combination", async (req, res) => {
 
     const rarityMessage = getRarityMessage(combination.length);
     const emailNote = isSelfWin
-      ? "This should not have ben probable, but it really happened. You matched your previous combination! This counts as a WIN."
+      ? "This should not have been probable, but it really happened. You matched your previous combination! This counts as a WIN."
       : "\nNote: Any new combination you save with this same email will overwrite your previous one.";
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      secure: process.env.SMTP_SECURE === "true",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
+    const transporter = nodemailer.createTransport(
+      sgTransport({
+        auth: {
+          api_key: process.env.SENDGRID_API_KEY
+        }
+      })
+    );
 
     await transporter.sendMail({
       from: process.env.FROM_EMAIL,
@@ -99,6 +99,7 @@ app.post("/save-combination", async (req, res) => {
     res.status(500).json({ error: "Failed to save or send email" });
   }
 });
+
 
 function getRarityMessage(n) {
   if (n > 20) {
